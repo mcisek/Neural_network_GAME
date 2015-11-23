@@ -18,28 +18,12 @@ Object::Object(int type, int x, int y)
     setPos(x, y);
 }
 
-void Object::keyPressEvent(QKeyEvent *event)
+void Object::move_left()
 {
-    if (event->key() == Qt::Key_Left)
-    {
-        if(object_type == 2)
-        {
-            setPos(x()-10,y());
-        }
-        if(object_type == 3)
-        {
-            setPos(x()-1,y());
-        }
-    }
-    else if (event->key() == Qt::Key_Right)
-    {
-        if(object_type == 2)
-        {
-            setPos(x()+10,y());
-        }
-        if(object_type == 3)
-        {
-            setPos(x()+1,y());
-        }
-    }
+    setPos(x()-10, y());
+}
+
+void Object::move_right()
+{
+    setPos(x()+10, y());
 }

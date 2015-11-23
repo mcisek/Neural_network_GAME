@@ -2,8 +2,8 @@
 #define MAP
 #include <QGraphicsItem>
 
-#define HEIGHT 15
-#define WIDTH 20
+#define HEIGHT 4
+#define WIDTH 4
 
 class Map : public QGraphicsRectItem
 {

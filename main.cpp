@@ -2,27 +2,26 @@
 #include <QGraphicsScene>
 #include <QGraphicsView>
 
-#include "player.h"
-#include "map.h"
-#include "object.h"
+#include "game.h"
 
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
 
-    QGraphicsScene * scene = new QGraphicsScene();
-    scene->setSceneRect(0,0,800,600);
+//    QGraphicsScene * scene = new QGraphicsScene();
 
-    Object * ob2 = new Object(2, 40, 40);
-    Object * ob3 = new Object(3, 80, 80);
+    Game * game = new Game();
 
-    scene->addItem(ob2);
-    scene->addItem(ob3);
+//    game->setFlag(QGraphicsItem::ItemIsFocusable);
+//    game->setFocus();
 
-    QGraphicsView * view = new QGraphicsView(scene);
-    view->setFixedSize(800,600);
+    game->show();
+//    scene->addItem(game);
 
-    view->show();
+//    QGraphicsView * view = new QGraphicsView(scene);
+//    view->setFixedSize(800,600);
+
+//    view->show();
 
     return a.exec();
 }

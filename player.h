@@ -8,9 +8,9 @@ class Player: public QObject, public QGraphicsRectItem
     Q_OBJECT
 public:
     Player();
-    void keyPressEvent(QKeyEvent * event);
-public slots:
-    void fall();
+    Player(int x, int y);
+    void moveleft();
+    void moveright();
 };
 #endif // PLAYER
 

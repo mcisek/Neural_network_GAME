@@ -11,7 +11,8 @@ class Object : public QObject, public QGraphicsRectItem
 public:
     Object();
     Object(int type, int x, int y);
-    void keyPressEvent(QKeyEvent * event);
+    void move_left();
+    void move_right();
 };
 
 #endif // OBJECT
