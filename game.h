@@ -10,8 +10,13 @@
 #include "map.h"
 #include "player.h"
 
-#define HEIGHT 4
-#define WIDTH 4
+#define HEIGHT 15
+#define WIDTH 20
+
+/*TO DO:
+-remove obstacles table (create additional class);
+
+  */
 
 class Game : public QGraphicsView//public QObject, public QGraphicsRectItem
 {
@@ -25,6 +30,7 @@ public:
 
     Game();
     void keyPressEvent(QKeyEvent * event);
+
     void move_obstacles_left(int how_many_px);
     void print_obstacles_table();
 };

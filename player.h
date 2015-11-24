@@ -2,6 +2,7 @@
 #define PLAYER
 #include <QGraphicsRectItem>
 #include <QObject>
+#include <QTimer>
 
 class Player: public QObject, public QGraphicsRectItem
 {
@@ -9,8 +10,8 @@ class Player: public QObject, public QGraphicsRectItem
 public:
     Player();
     Player(int x, int y);
-    void moveleft();
-    void moveright();
+public slots:
+    void fall_down();
 };
 #endif // PLAYER
 

@@ -4,6 +4,7 @@
 #include "game.h"
 #include "player.h"
 #include "object.h"
+#include "bullet.h"
 
 Game::Game()
 {
@@ -16,19 +17,13 @@ Game::Game()
 
     level_map = new Map();
 
-    for(int i=0;i<4;i++)
+    for(int i=0;i<WIDTH;i++)
     {
-        for(int j=0;j<4;j++)
+        for(int j=0;j<HEIGHT;j++)
         {
-            if((i+j)%4 == 1)
-            {
-                obstacles[i][j] = new Object(1,40*i,40*j);
-                scene->addItem(obstacles[i][j]);
-            }
-            else
-            {
-                obstacles[i][j] = new Object(0,40*i,40*j);
-            }
+            int type = level_map->get_type(i,j);
+            obstacles[i][j] = new Object(type,40*i,40*j);
+            scene->addItem(obstacles[i][j]);
         }
     }
 
@@ -48,7 +43,6 @@ void Game::keyPressEvent(QKeyEvent * event)
     else if (event->key() == Qt::Key_Right)
     {
         qDebug()<<"right";
-        //player->setPos(player->x()+5, player->y());
         move_obstacles_left(5);
     }
     else if (event->key() == Qt::Key_Up)
@@ -61,6 +55,13 @@ void Game::keyPressEvent(QKeyEvent * event)
         qDebug()<<"down";
         player->setPos(player->x(), player->y()+5);
     }
+    else if (event->key() == Qt::Key_Space)
+    {
+        qDebug()<<"space";
+        Bullet * b = new Bullet();
+        b->setPos(player->x(),player->y());
+        scene->addItem(b);
+    }
 }
 
 void Game::move_obstacles_left(int how_many_px)
@@ -70,10 +71,8 @@ void Game::move_obstacles_left(int how_many_px)
     {
         for(int j=0; j<HEIGHT; j++)
         {
-            qDebug() << "checking if 1 == " << obstacles[i][j]->type();
             if(obstacles[i][j]->getType() == 1)
             {
-                qDebug() << "move obstacle: " << i << ", " << j;
                 obstacles[i][j]->setPos((obstacles[i][j]->x())-how_many_px, obstacles[i][j]->y());
             }
         }
