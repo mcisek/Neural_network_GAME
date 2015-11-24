@@ -2,12 +2,15 @@
 #define MAP
 #include <QGraphicsItem>
 
-#define HEIGHT 4
-#define WIDTH 4
+#include "object.h"
+
+#define LEVEL_WIDTH 4
+#define LEVEL_HEIGHT 4
 
 class Map : public QGraphicsRectItem
 {
-    int map_table[WIDTH][HEIGHT];
+    //int object_types_table[WIDTH][HEIGHT];
+    int map_table[LEVEL_WIDTH][LEVEL_HEIGHT];
 public:
     Map();
 };

@@ -14,13 +14,22 @@ Game::Game()
     setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     setFixedSize(800,600);
 
-    ob1 = new Object(1, 0, 0);
-    scene->addItem(ob1);
+    level_map = new Map();
+
+    for(int i=0;i<4;i++)
+    {
+        for(int j=0;j<4;j++)
+        {
+            if((i+j)%4 == 1)
+            {
+                obstacles[i][j] = new Object(1,40*i,40*j);
+                scene->addItem(obstacles[i][j]);
+            }
+        }
+    }
 
     player = new Player(200, 200);
     scene->addItem(player);
-
-    qDebug()<<"construct";
 }
 
 void Game::keyPressEvent(QKeyEvent * event)
@@ -28,13 +37,35 @@ void Game::keyPressEvent(QKeyEvent * event)
     if (event->key() == Qt::Key_Left)
     {
         qDebug()<<"left";
-        ob1->setPos(ob1->x()-10, ob1->y());
-        player->setPos(player->x()+1, player->y()+5);
+        player->setPos(player->x()-5, player->y());
     }
     else if (event->key() == Qt::Key_Right)
     {
         qDebug()<<"right";
-        ob1->setPos(ob1->x()+10, ob1->y());
-        player->setPos(player->x()-1, player->y()-5);
+        //player->setPos(player->x()+5, player->y());
+        move_obstacles_left(5);
+    }
+    else if (event->key() == Qt::Key_Up)
+    {
+        qDebug()<<"up";
+        player->setPos(player->x(), player->y()-5);
+    }
+    else if (event->key() == Qt::Key_Down)
+    {
+        qDebug()<<"down";
+        player->setPos(player->x(), player->y()+5);
+    }
+}
+
+void Game::move_obstacles_left(int how_many_px)
+{
+    for(int i=0; i<WIDTH; i++)
+    {
+        for(int j=0; j<HEIGHT; j++)
+        {
+            //TO DO:
+            //checking if obstacle is created (could use types of object to define f its created)
+            obstacles[i][j]->setPos(obstacles[i][j]->x()-how_many_px,obstacles[i][j]->y());
+        }
     }
 }
