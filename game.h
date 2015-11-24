@@ -26,6 +26,7 @@ public:
     Game();
     void keyPressEvent(QKeyEvent * event);
     void move_obstacles_left(int how_many_px);
+    void print_obstacles_table();
 };
 
 #endif // GAME

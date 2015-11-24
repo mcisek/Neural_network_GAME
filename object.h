@@ -13,6 +13,7 @@ public:
     Object(int type, int x, int y);
     void move_left();
     void move_right();
+    int getType();
 };
 
 #endif // OBJECT

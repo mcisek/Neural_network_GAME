@@ -19,6 +19,8 @@ Object::Object(int type, int x, int y)
         setFocus();
         setPos(x, y);
     }
+    else
+        object_type = type;
 }
 
 void Object::move_left()
@@ -29,4 +31,9 @@ void Object::move_left()
 void Object::move_right()
 {
     setPos(x()+10, y());
+}
+
+int Object::getType()
+{
+    return object_type;
 }

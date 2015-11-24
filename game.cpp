@@ -25,8 +25,14 @@ Game::Game()
                 obstacles[i][j] = new Object(1,40*i,40*j);
                 scene->addItem(obstacles[i][j]);
             }
+            else
+            {
+                obstacles[i][j] = new Object(0,40*i,40*j);
+            }
         }
     }
+
+    print_obstacles_table();
 
     player = new Player(200, 200);
     scene->addItem(player);
@@ -59,13 +65,29 @@ void Game::keyPressEvent(QKeyEvent * event)
 
 void Game::move_obstacles_left(int how_many_px)
 {
+    qDebug() << "move_obstacles_left";
     for(int i=0; i<WIDTH; i++)
     {
         for(int j=0; j<HEIGHT; j++)
         {
-            //TO DO:
-            //checking if obstacle is created (could use types of object to define f its created)
-            obstacles[i][j]->setPos(obstacles[i][j]->x()-how_many_px,obstacles[i][j]->y());
+            qDebug() << "checking if 1 == " << obstacles[i][j]->type();
+            if(obstacles[i][j]->getType() == 1)
+            {
+                qDebug() << "move obstacle: " << i << ", " << j;
+                obstacles[i][j]->setPos((obstacles[i][j]->x())-how_many_px, obstacles[i][j]->y());
+            }
+        }
+    }
+}
+
+void Game::print_obstacles_table()
+{
+    qDebug() << "OBSTACLES TABLE: ";
+    for(int i=0; i<WIDTH; i++)
+    {
+        for(int j=0; j<HEIGHT; j++)
+        {
+            qDebug() << i << ", " << j << ", type:" << obstacles[i][j]->getType();
         }
     }
 }
