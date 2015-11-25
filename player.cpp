@@ -79,6 +79,22 @@ bool Player::is_colliding_up()
     return false;
 }
 
+bool Player::is_colliding_down()
+{
+    QList <QGraphicsItem *> colliding_items = collidingItems();
+    for(int i =0; i<colliding_items.size(); i++)
+    {
+        if(typeid(* (colliding_items[i])) == typeid(Object))
+        {
+            if(colliding_items[i]->pos().y() == pos().y() + 40)
+            {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
 void Player::allow_jump()
 {
     if(!is_in_the_air)
@@ -89,18 +105,11 @@ void Player::fall_down()
 {
     if(!jumping)
     {
-        QList <QGraphicsItem *> colliding_items = collidingItems();
-        for(int i =0; i<colliding_items.size(); i++)
+        if(is_colliding_down())
         {
-            if(typeid(* (colliding_items[i])) == typeid(Object))
-            {
-                if(colliding_items[i]->pos().y() == pos().y() + 40)
-                {
-                    is_in_the_air = false;
-                    vertical_steps = 0;
-                    return;
-                }
-            }
+            is_in_the_air = false;
+            vertical_steps = 0;
+            return;
         }
         setPos(x(), y()+5);
     }

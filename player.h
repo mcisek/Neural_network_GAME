@@ -14,6 +14,7 @@ public:
     bool is_colliding_left();
     bool is_colliding_right();
     bool is_colliding_up();
+    bool is_colliding_down();
     void allow_jump();
 public slots:
     void fall_down();

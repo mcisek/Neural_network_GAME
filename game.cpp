@@ -11,6 +11,8 @@ int number_of_steps = 0;
 
 Game::Game()
 {
+    points = 0;
+
     scene = new QGraphicsScene();
     scene->setSceneRect(0,0,800,600);
     setScene(scene);
@@ -32,7 +34,7 @@ Game::Game()
 
     //print_obstacles_table();
 
-    player = new Player(200, 200);
+    player = new Player(60, 60);
     scene->addItem(player);
 }
 
@@ -42,7 +44,9 @@ void Game::keyPressEvent(QKeyEvent * event)
     if (event->key() == Qt::Key_Left)
     {
         if(player->pos().x() > 0 && !player->is_colliding_left())
+        {
             player->setPos(player->x()-5, player->y());
+        }
     }
     //RIGHT
     else if (event->key() == Qt::Key_Right)
@@ -50,7 +54,9 @@ void Game::keyPressEvent(QKeyEvent * event)
         if(!player->is_colliding_right())
         {
             if (player->pos().x() < 200)
+            {
                 player->setPos(player->x()+5, player->y());
+            }
             else
             {
                 if(number_of_steps == 8)
@@ -60,7 +66,9 @@ void Game::keyPressEvent(QKeyEvent * event)
                 }
                 move_obstacles_left(5);
                 number_of_steps++;
+                points ++;
             }
+            qDebug() << "POINTS: " << points;
         }
     }
     //UP
@@ -68,7 +76,6 @@ void Game::keyPressEvent(QKeyEvent * event)
     {
         if(!player->is_colliding_up())
             player->allow_jump();
-//            player->setPos(player->x(), player->y()-5);
     }
     //DOWN
     else if (event->key() == Qt::Key_Down)

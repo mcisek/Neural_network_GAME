@@ -21,6 +21,7 @@
 class Game : public QGraphicsView//public QObject, public QGraphicsRectItem
 {
     Q_OBJECT
+    int points;
 public:
     QGraphicsScene *scene;
 //    int number_of_columns;
