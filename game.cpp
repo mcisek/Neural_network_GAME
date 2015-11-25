@@ -41,34 +41,39 @@ void Game::keyPressEvent(QKeyEvent * event)
     //LEFT
     if (event->key() == Qt::Key_Left)
     {
-        if(player->pos().x() > 0)
+        if(player->pos().x() > 0 && !player->is_colliding_left())
             player->setPos(player->x()-5, player->y());
     }
     //RIGHT
     else if (event->key() == Qt::Key_Right)
     {
-        if (player->pos().x() < 200)
-            player->setPos(player->x()+5, player->y());
-        else
+        if(!player->is_colliding_right())
         {
-            if(number_of_steps == 8)
+            if (player->pos().x() < 200)
+                player->setPos(player->x()+5, player->y());
+            else
             {
-                get_new_column_from_map();
-                number_of_steps = 0;
+                if(number_of_steps == 8)
+                {
+                    get_new_column_from_map();
+                    number_of_steps = 0;
+                }
+                move_obstacles_left(5);
+                number_of_steps++;
             }
-            move_obstacles_left(5);
-            number_of_steps++;
         }
     }
     //UP
     else if (event->key() == Qt::Key_Up)
     {
-        player->setPos(player->x(), player->y()-5);
+        if(!player->is_colliding_up())
+            player->allow_jump();
+//            player->setPos(player->x(), player->y()-5);
     }
     //DOWN
     else if (event->key() == Qt::Key_Down)
     {
-        player->setPos(player->x(), player->y()+5);
+//        player->setPos(player->x(), player->y()+5);
     }
     //SPACE
     else if (event->key() == Qt::Key_Space)
