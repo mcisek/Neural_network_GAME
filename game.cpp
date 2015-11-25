@@ -27,7 +27,7 @@ Game::Game()
         }
     }
 
-    print_obstacles_table();
+    //print_obstacles_table();
 
     player = new Player(200, 200);
     scene->addItem(player);
