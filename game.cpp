@@ -6,6 +6,9 @@
 #include "object.h"
 #include "bullet.h"
 
+int number_of_columns = 0;
+int number_of_steps = 0;
+
 Game::Game()
 {
     scene = new QGraphicsScene();
@@ -35,38 +38,49 @@ Game::Game()
 
 void Game::keyPressEvent(QKeyEvent * event)
 {
+    //LEFT
     if (event->key() == Qt::Key_Left)
     {
-        qDebug()<<"left";
-        player->setPos(player->x()-5, player->y());
+        if(player->pos().x() > 0)
+            player->setPos(player->x()-5, player->y());
     }
+    //RIGHT
     else if (event->key() == Qt::Key_Right)
     {
-        qDebug()<<"right";
-        move_obstacles_left(5);
+        if (player->pos().x() < 200)
+            player->setPos(player->x()+5, player->y());
+        else
+        {
+            if(number_of_steps == 8)
+            {
+                get_new_column_from_map();
+                number_of_steps = 0;
+            }
+            move_obstacles_left(5);
+            number_of_steps++;
+        }
     }
+    //UP
     else if (event->key() == Qt::Key_Up)
     {
-        qDebug()<<"up";
         player->setPos(player->x(), player->y()-5);
     }
+    //DOWN
     else if (event->key() == Qt::Key_Down)
     {
-        qDebug()<<"down";
         player->setPos(player->x(), player->y()+5);
     }
+    //SPACE
     else if (event->key() == Qt::Key_Space)
     {
-        qDebug()<<"space";
         Bullet * b = new Bullet();
-        b->setPos(player->x(),player->y());
+        b->setPos(player->x(),player->y()+5);
         scene->addItem(b);
     }
 }
 
 void Game::move_obstacles_left(int how_many_px)
 {
-    qDebug() << "move_obstacles_left";
     for(int i=0; i<WIDTH; i++)
     {
         for(int j=0; j<HEIGHT; j++)
@@ -77,6 +91,28 @@ void Game::move_obstacles_left(int how_many_px)
             }
         }
     }
+}
+
+void Game::get_new_column_from_map()
+{
+    for(int i=0; i<HEIGHT; i++)
+    {
+        scene->removeItem(obstacles[0][i]);
+        delete obstacles[0][i];
+    }
+    for(int i=1; i<WIDTH; i++)
+    {
+        for(int j=0; j<HEIGHT; j++)
+        {
+            obstacles[i-1][j]=obstacles[i][j];
+        }
+    }
+    for(int i=0; i<HEIGHT; i++)
+    {
+        obstacles[20][i] = new Object (level_map->get_type(20+number_of_columns,i), 40*20, 40*i);
+        scene->addItem(obstacles[20][i]);
+    }
+    number_of_columns++;
 }
 
 void Game::print_obstacles_table()

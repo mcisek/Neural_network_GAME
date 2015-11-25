@@ -23,7 +23,6 @@ Map::Map()
         {
             char a;
             file.getChar(&a);
-            a == ' ';
             if(a == ' ' || a == '\n')
                 file.getChar(&a);
 

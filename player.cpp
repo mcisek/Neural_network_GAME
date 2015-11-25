@@ -1,7 +1,10 @@
-#include "player.h"
-#include <QKeyEvent>
-#include <QGraphicsScene>
 #include <QDebug>
+#include <QList>
+//#include <QKeyEvent>
+//#include <QGraphicsScene>
+
+#include "player.h"
+#include "object.h"
 
 Player::Player()
 {
@@ -25,6 +28,16 @@ Player::Player(int x, int y)
 
 void Player::fall_down()
 {
-//    setPos(x(), y()+5);
+    QList <QGraphicsItem *> colliding_items = collidingItems();
+    for(int i =0; i<colliding_items.size(); i++)
+    {
+        if(typeid(* (colliding_items[i])) == typeid(Object))
+        {
+            if(colliding_items[i]->pos().y() == pos().y() + 40)
+                return;
+        }
+
+    }
+    setPos(x(), y()+5);
 }
 

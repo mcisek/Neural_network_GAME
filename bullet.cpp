@@ -1,6 +1,9 @@
-#include "bullet.h"
 #include <QTimer>
 #include <QGraphicsScene>
+
+#include "bullet.h"
+#include "object.h"
+#include "enemy.h"
 
 Bullet::Bullet()
 {
@@ -24,10 +27,9 @@ Bullet::Bullet(int x, int y)
 
 void Bullet::move()
 {
-    //check if collide with sth
-//    QList <QGraphicsItem *> colliding_items = collidingItems();
-//    for(int i =0; i<colliding_items.size(); i++)
-//    {
+    QList <QGraphicsItem *> colliding_items = collidingItems();
+    for(int i =0; i<colliding_items.size(); i++)
+    {
 //        if(typeid(* (colliding_items[i])) == typeid(Enemy))
 //        {
 //            scene()->removeItem(colliding_items[i]);
@@ -37,7 +39,14 @@ void Bullet::move()
 //            delete this;
 //            return;
 //        }
-//    }
+        if(typeid(* (colliding_items[i])) == typeid(Object))
+        {
+            scene()->removeItem(this);
+            delete this;
+            return;
+        }
+
+    }
 
     //move
     setPos(x()+10,y());
