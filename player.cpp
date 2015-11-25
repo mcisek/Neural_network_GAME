@@ -1,12 +1,15 @@
 #include <QDebug>
 #include <QList>
+#include <QBrush>
 //#include <QKeyEvent>
 //#include <QGraphicsScene>
 
 #define JUMP_ALTITUDE 30
 
+
 #include "player.h"
 #include "object.h"
+#include "game.h"
 
 int vertical_steps = 0;
 bool jumping = false;
@@ -14,6 +17,7 @@ bool jumping = false;
 Player::Player()
 {
     setRect(0,0,40,40);
+    setBrush(* new QBrush(Qt::black));
     is_in_the_air = true;
 
     QTimer * timer = new QTimer();
@@ -25,6 +29,7 @@ Player::Player()
 Player::Player(int x, int y)
 {
     setRect(0,0,40,40);
+    setBrush(* new QBrush(Qt::black));
     is_in_the_air = true;
 
     QTimer * timer = new QTimer();
@@ -111,7 +116,7 @@ void Player::fall_down()
             vertical_steps = 0;
             return;
         }
-        setPos(x(), y()+5);
+        setPos(x(), y()+GAME_SPEED*5);
     }
 }
 
@@ -120,7 +125,7 @@ void Player::jump()
     if(jumping && vertical_steps != JUMP_ALTITUDE && !is_colliding_up())
     {
         vertical_steps ++;
-        setPos(x(), y()-5);
+        setPos(x(), y()-GAME_SPEED*5);
     }
     else if (vertical_steps == JUMP_ALTITUDE || is_colliding_up())
     {

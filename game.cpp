@@ -1,5 +1,6 @@
 #include <QGraphicsView>
 #include <QDebug>
+#include <QBrush>
 
 #include "game.h"
 #include "player.h"
@@ -8,6 +9,8 @@
 
 int number_of_columns = 0;
 int number_of_steps = 0;
+
+QBrush * object_brush = new QBrush(Qt::green);
 
 Game::Game()
 {
@@ -28,6 +31,7 @@ Game::Game()
         {
             int type = level_map->get_type(i,j);
             obstacles[i][j] = new Object(type,40*i,40*j);
+            obstacles[i][j]->setBrush(* object_brush);
             scene->addItem(obstacles[i][j]);
         }
     }
@@ -45,7 +49,7 @@ void Game::keyPressEvent(QKeyEvent * event)
     {
         if(player->pos().x() > 0 && !player->is_colliding_left())
         {
-            player->setPos(player->x()-5, player->y());
+            player->setPos(player->x()-GAME_SPEED*5, player->y());
         }
     }
     //RIGHT
@@ -55,7 +59,7 @@ void Game::keyPressEvent(QKeyEvent * event)
         {
             if (player->pos().x() < 200)
             {
-                player->setPos(player->x()+5, player->y());
+                player->setPos(player->x()+GAME_SPEED*5, player->y());
             }
             else
             {
@@ -64,7 +68,7 @@ void Game::keyPressEvent(QKeyEvent * event)
                     get_new_column_from_map();
                     number_of_steps = 0;
                 }
-                move_obstacles_left(5);
+                move_obstacles_left(GAME_SPEED*5);
                 number_of_steps++;
                 points ++;
             }
@@ -122,6 +126,7 @@ void Game::get_new_column_from_map()
     for(int i=0; i<HEIGHT; i++)
     {
         obstacles[20][i] = new Object (level_map->get_type(20+number_of_columns,i), 40*20, 40*i);
+        obstacles[20][i]->setBrush(* object_brush);
         scene->addItem(obstacles[20][i]);
     }
     number_of_columns++;

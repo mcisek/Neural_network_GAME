@@ -12,6 +12,7 @@
 
 #define HEIGHT 15
 #define WIDTH 21
+#define GAME_SPEED 1 //do not change
 
 /*TO DO:
 -remove obstacles table (create additional class);
