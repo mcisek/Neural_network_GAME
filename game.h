@@ -14,11 +14,6 @@
 #define WIDTH 21
 #define GAME_SPEED 1 //do not change
 
-/*TO DO:
--remove obstacles table (create additional class);
-
-  */
-
 class Game : public QGraphicsView//public QObject, public QGraphicsRectItem
 {
     Q_OBJECT
@@ -36,6 +31,11 @@ public:
     void move_obstacles_left(int how_many_px);
     void get_new_column_from_map();
     void print_obstacles_table();
+
+    void player_right();
+    void player_left();
+    void player_up();
+    void player_shoot();
 };
 
 #endif // GAME

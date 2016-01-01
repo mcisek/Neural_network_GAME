@@ -42,56 +42,71 @@ Game::Game()
     scene->addItem(player);
 }
 
+void Game::player_right()
+{
+    if(!player->is_colliding_right())
+    {
+        if (player->pos().x() < 200)
+        {
+            player->setPos(player->x()+GAME_SPEED*5, player->y());
+        }
+        else
+        {
+            if(number_of_steps == 8)
+            {
+                get_new_column_from_map();
+                number_of_steps = 0;
+            }
+            move_obstacles_left(GAME_SPEED*5);
+            number_of_steps++;
+            points ++;
+        }
+        qDebug() << "POINTS: " << points;
+    }
+}
+
+void Game::player_left()
+{
+    if(player->pos().x() > 0 && !player->is_colliding_left())
+    {
+        player->setPos(player->x()-GAME_SPEED*5, player->y());
+    }
+}
+
+void Game::player_up()
+{
+    if(!player->is_colliding_up())
+        player->allow_jump();
+}
+
+void Game::player_shoot()
+{
+    Bullet * b = new Bullet();
+    b->setPos(player->x(),player->y()+5);
+    scene->addItem(b);
+}
+
 void Game::keyPressEvent(QKeyEvent * event)
 {
     //LEFT
     if (event->key() == Qt::Key_Left)
     {
-        if(player->pos().x() > 0 && !player->is_colliding_left())
-        {
-            player->setPos(player->x()-GAME_SPEED*5, player->y());
-        }
+        player_left();
     }
     //RIGHT
     else if (event->key() == Qt::Key_Right)
     {
-        if(!player->is_colliding_right())
-        {
-            if (player->pos().x() < 200)
-            {
-                player->setPos(player->x()+GAME_SPEED*5, player->y());
-            }
-            else
-            {
-                if(number_of_steps == 8)
-                {
-                    get_new_column_from_map();
-                    number_of_steps = 0;
-                }
-                move_obstacles_left(GAME_SPEED*5);
-                number_of_steps++;
-                points ++;
-            }
-            qDebug() << "POINTS: " << points;
-        }
+        player_right();
     }
     //UP
     else if (event->key() == Qt::Key_Up)
     {
-        if(!player->is_colliding_up())
-            player->allow_jump();
-    }
-    //DOWN
-    else if (event->key() == Qt::Key_Down)
-    {
-//        player->setPos(player->x(), player->y()+5);
+        player_up();
     }
     //SPACE
     else if (event->key() == Qt::Key_Space)
     {
-        Bullet * b = new Bullet();
-        b->setPos(player->x(),player->y()+5);
-        scene->addItem(b);
+        player_shoot();
     }
 }
 

@@ -6,7 +6,6 @@
 
 #define JUMP_ALTITUDE 30
 
-
 #include "player.h"
 #include "object.h"
 #include "game.h"
