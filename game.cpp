@@ -158,3 +158,15 @@ void Game::print_obstacles_table()
         }
     }
 }
+
+int Game::get_obstacles_table_width()
+{
+    int ret = WIDTH;
+    return ret;
+}
+
+int Game::get_obstacles_table_height()
+{
+    int ret = HEIGHT;
+    return ret;
+}

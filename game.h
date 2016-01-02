@@ -31,6 +31,8 @@ public:
     void move_obstacles_left(int how_many_px);
     void get_new_column_from_map();
     void print_obstacles_table();
+    int get_obstacles_table_width();
+    int get_obstacles_table_height();
 
     void player_right();
     void player_left();
