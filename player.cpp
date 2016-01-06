@@ -77,7 +77,9 @@ bool Player::is_colliding_up()
         if(typeid(* (colliding_items[i])) == typeid(Object))
         {
             if(colliding_items[i]->pos().y() == pos().y() - 40)
-                return true;
+                if(colliding_items[i]->pos().x() > pos().x() - 40 &&
+                        colliding_items[i]->pos().x() < pos().x() + 40)
+                    return true;
         }
     }
     return false;
@@ -91,9 +93,9 @@ bool Player::is_colliding_down()
         if(typeid(* (colliding_items[i])) == typeid(Object))
         {
             if(colliding_items[i]->pos().y() == pos().y() + 40)
-            {
-                return true;
-            }
+                if(colliding_items[i]->pos().x() > pos().x() - 40 &&
+                        colliding_items[i]->pos().x() < pos().x() + 40)
+                    return true;
         }
     }
     return false;

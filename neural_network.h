@@ -2,6 +2,7 @@
 #define NEURAL_NETWORK
 
 #include "game.h"
+#include "population.h"
 #include <QObject>
 #include <QGraphicsView>
 
@@ -14,6 +15,7 @@ class NeuralNetwork: public QObject
 {
     Q_OBJECT
     Game * game;
+    Population * population;
     int input_table[NUMBER_OF_INPUTS];
     int output_table[NUMBER_OF_OUTPUTS];
     int input_table_of_connections[NUMBER_OF_INPUTS][NUMBER_OF_NODES];
@@ -21,7 +23,9 @@ class NeuralNetwork: public QObject
     int nodes_values[NUMBER_OF_NODES];
     int chromosome[CHROMOSOME_LENGTH];
 public:
+    NeuralNetwork();
     NeuralNetwork(Game *game);
+    NeuralNetwork(int chr[CHROMOSOME_LENGTH]);
     void create_chromosome();
     void generate_random_chromosome();
     void read_chromosome();

@@ -15,6 +15,7 @@ QBrush * object_brush = new QBrush(Qt::green);
 Game::Game()
 {
     points = 0;
+    restart_flag = 0;
 
     scene = new QGraphicsScene();
     scene->setSceneRect(0,0,800,600);
@@ -75,7 +76,7 @@ void Game::player_left()
 
 void Game::player_up()
 {
-    if(!player->is_colliding_up())
+    if(!player->is_colliding_up() && player->is_colliding_down())
         player->allow_jump();
 }
 
@@ -84,6 +85,21 @@ void Game::player_shoot()
     Bullet * b = new Bullet();
     b->setPos(player->x(),player->y()+5);
     scene->addItem(b);
+}
+
+void Game::game_restart()
+{
+    restart_flag = 1;
+}
+
+void Game::set_r_flag(int i)
+{
+    restart_flag = i;
+}
+
+int Game::get_r_flag()
+{
+    return restart_flag;
 }
 
 void Game::keyPressEvent(QKeyEvent * event)
@@ -106,7 +122,9 @@ void Game::keyPressEvent(QKeyEvent * event)
     //SPACE
     else if (event->key() == Qt::Key_Space)
     {
-        player_shoot();
+        //player_shoot();
+        qDebug() << "CHROMOSOME RESTART";
+        game_restart();
     }
 }
 

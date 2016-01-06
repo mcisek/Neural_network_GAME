@@ -18,6 +18,7 @@ class Game : public QGraphicsView//public QObject, public QGraphicsRectItem
 {
     Q_OBJECT
     int points;
+    int restart_flag;
 public:
     QGraphicsScene *scene;
 //    int number_of_columns;
@@ -38,6 +39,9 @@ public:
     void player_left();
     void player_up();
     void player_shoot();
+    void game_restart();
+    void set_r_flag(int i);
+    int get_r_flag();
 };
 
 #endif // GAME

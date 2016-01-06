@@ -6,21 +6,36 @@
 
 void NeuralNetwork::action()
 {
-    //    generate_random_chromosome();
+    //        generate_random_chromosome();
 
-    //    get_input_table();
-    //    read_chromosome();
-    //    get_nodes_values();
-    //    generate_output();
-
-    //    if(output_table[0]==1)
-    //        game->player_left();
-    //    if(output_table[1]==1)
-    //        game->player_right();
-    //    if(output_table[2]==1)
-    //        game->player_up();
-    //game->player_right();
     get_input_table();
+    read_chromosome();
+    get_nodes_values();
+    generate_output();
+
+    if(output_table[0]==1)
+        game->player_right();
+    if(output_table[1]==1)
+        game->player_up();
+    if(output_table[2]==1)
+        game->player_left();
+    if(game->get_r_flag() == 1)
+    {
+        game->set_r_flag(0);
+        generate_random_chromosome();
+    }
+    //    game->player_right();
+    //    get_input_table();
+}
+
+NeuralNetwork::NeuralNetwork()
+{
+    Population * p = new Population();
+    this->population = p;
+
+    QTimer * timer = new QTimer();
+    //connect(timer, SIGNAL(timeout()),this,SLOT(action()));
+    timer->start(50);
 }
 
 NeuralNetwork::NeuralNetwork(Game *game)
@@ -28,11 +43,25 @@ NeuralNetwork::NeuralNetwork(Game *game)
     this->game = game;
 
     QTimer * timer = new QTimer();
-    connect(timer, SIGNAL(timeout()),this,SLOT(action()));
+    //connect(timer, SIGNAL(timeout()),this,SLOT(action()));
     timer->start(50);
 
     generate_random_chromosome();
     print_chromosome();
+}
+
+NeuralNetwork::NeuralNetwork(int chr[CHROMOSOME_LENGTH])
+{
+    for(int i=0; i<CHROMOSOME_LENGTH; i++)
+        chromosome[i]=chr[i];
+
+    Game * g = new Game();
+    this->game = g;
+    game->show();
+
+    QTimer * timer = new QTimer();
+    //connect(timer, SIGNAL(timeout()),this,SLOT(action()));
+    timer->start(50);
 }
 
 void NeuralNetwork::create_chromosome()
@@ -126,11 +155,11 @@ void NeuralNetwork::get_input_table()
     }
 
 
-    qDebug() << "INPUT:";
+    //    qDebug() << "INPUT:";
 
-    qDebug() << table_obstacles[2][2] << " " << table_obstacles[1][2] << " " << table_obstacles[0][2];
-    qDebug() << table_obstacles[2][1] << " " << "X" << " " << table_obstacles[0][1];
-    qDebug() << table_obstacles[2][0] << " " << table_obstacles[1][0] << " " << table_obstacles[0][0];
+    //    qDebug() << table_obstacles[2][2] << " " << table_obstacles[1][2] << " " << table_obstacles[0][2];
+    //    qDebug() << table_obstacles[2][1] << " " << "X" << " " << table_obstacles[0][1];
+    //    qDebug() << table_obstacles[2][0] << " " << table_obstacles[1][0] << " " << table_obstacles[0][0];
 
     //qDebug() << "INPUT: " << input_table[0] << ", " << input_table[1] << ", " << input_table[2] << ", " << input_table[3] << ", " << input_table[4] << ", " << input_table[5] << ", " << input_table[6] << ", " << input_table[7];
 }
