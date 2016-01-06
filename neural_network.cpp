@@ -31,9 +31,6 @@ void NeuralNetwork::action()
 
 NeuralNetwork::NeuralNetwork()
 {
-    Population * p = new Population();
-    this->population = p;
-
     Game * g = new Game();
     this->game = g;
     game->show();
@@ -194,5 +191,22 @@ void NeuralNetwork::generate_output()
             if(nodes_table_of_connections[i][j] == 1)
                 output_table[j] = 1;
         }
+    }
+}
+
+int NeuralNetwork::get_chromosome_gene(int num)
+{
+    int tmp = -1;
+    if(num < CHROMOSOME_LENGTH)
+        tmp = this->chromosome[num];
+    return tmp;
+}
+
+void NeuralNetwork::set_chromosome_gene(int num, int value)
+{
+    if(num < CHROMOSOME_LENGTH)
+    {
+        if(value == 1 || value == 0)
+            this->chromosome[num] = value;
     }
 }
