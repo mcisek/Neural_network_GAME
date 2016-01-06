@@ -11,11 +11,13 @@ int main(int argc, char *argv[])
 
     srand(time(NULL));
 
-    Game * game;
-    game = new Game();
+//    Game * game;
+//    game = new Game();
 
-    NeuralNetwork * nn = new NeuralNetwork(game);
-    game->show();
+    //NeuralNetwork * nn = new NeuralNetwork(game);
+    //game->show();
+
+    new NeuralNetwork();
 
     return a.exec();
 }

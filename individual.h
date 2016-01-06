@@ -1,7 +1,9 @@
 #ifndef INDIVIDUAL
 #define INDIVIDUAL
 
-#include "neural_network.h"
+//#include "neural_network.h"
+#include "main.h"
+#include "math.h"
 
 #define MUTATION_CHANCE 10
 

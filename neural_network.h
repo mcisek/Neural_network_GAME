@@ -2,14 +2,16 @@
 #define NEURAL_NETWORK
 
 #include "game.h"
+#include "main.h"
 #include "population.h"
+#include "individual.h"
 #include <QObject>
 #include <QGraphicsView>
 
-#define NUMBER_OF_INPUTS 8
-#define NUMBER_OF_OUTPUTS 3 //left, right, up
-#define NUMBER_OF_NODES 3
-#define CHROMOSOME_LENGTH NUMBER_OF_NODES*(NUMBER_OF_INPUTS+NUMBER_OF_OUTPUTS)
+//#define NUMBER_OF_INPUTS 8
+//#define NUMBER_OF_OUTPUTS 3 //left, right, up
+//#define NUMBER_OF_NODES 3
+//#define CHROMOSOME_LENGTH NUMBER_OF_NODES*(NUMBER_OF_INPUTS+NUMBER_OF_OUTPUTS)
 
 class NeuralNetwork: public QObject
 {

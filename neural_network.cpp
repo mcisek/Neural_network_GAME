@@ -1,5 +1,6 @@
 #include "neural_network.h"
 #include "math.h"
+#include <cstdlib>
 #include <QTimer>
 #include <QDebug>
 
@@ -32,6 +33,10 @@ NeuralNetwork::NeuralNetwork()
 {
     Population * p = new Population();
     this->population = p;
+
+    Game * g = new Game();
+    this->game = g;
+    game->show();
 
     QTimer * timer = new QTimer();
     //connect(timer, SIGNAL(timeout()),this,SLOT(action()));

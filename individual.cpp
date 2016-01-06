@@ -1,4 +1,6 @@
 #include "individual.h"
+#include "math.h"
+#include <cstdlib>
 
 Individual::Individual()
 {
@@ -10,7 +12,7 @@ void Individual::generate_random_chromosome()
 {
     for(int i=0; i<CHROMOSOME_LENGTH; i++)
     {
-        this->chromosome[i]=rand()%2;
+        this->chromosome[i] = rand()%2;
     }
 }
 

@@ -1,10 +1,9 @@
 #ifndef POPULATION
 #define POPULATION
 
-#include "neural_network.h"
+//#include "neural_network.h"
+#include "main.h"
 #include "individual.h"
-
-#define POPULATION_SIZE 10
 
 class Population
 {
