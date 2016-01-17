@@ -11,14 +11,14 @@ int main(int argc, char *argv[])
 
     srand(time(NULL));
 
-//    Game * game;
-//    game = new Game();
+    Game * game;
+    game = new Game();
 
 //    NeuralNetwork * nn = new NeuralNetwork(game);
 //    game->show();
 
 //    new NeuralNetwork();
-    new Population();
+    new Population(game);
 //    Individual * in = new Individual();
 //    in->start_game();
 

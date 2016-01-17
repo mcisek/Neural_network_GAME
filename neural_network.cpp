@@ -33,9 +33,15 @@ NeuralNetwork::NeuralNetwork()
 {
     game_time = 0;
 
-    //    Game * g = new Game();
-    //    this->game = g;
+    Game * g = new Game();
+    this->game = g;
     //    game->show();
+}
+
+NeuralNetwork::NeuralNetwork(Game *game)
+{
+    game_time = 0;
+    this->game = game;
 }
 
 //NeuralNetwork::NeuralNetwork(Game *game)
@@ -200,18 +206,20 @@ int NeuralNetwork::get_chromosome_gene(int num)
 
 void NeuralNetwork::start_game()
 {
-    Game * g = new Game();
-    this->game = g;
-    game->show();
+//    Game * g = new Game();
+//    this->game = g;
+    this->game->show();
 
-    QTimer * timer = new QTimer();
-    connect(timer, SIGNAL(timeout()),this,SLOT(action()));
-    timer->start(50);
+    this->nn_timer = new QTimer();
+    connect(nn_timer, SIGNAL(timeout()),this,SLOT(action()));
+    nn_timer->start(50);
 }
 
 void NeuralNetwork::close_game()
 {
-    this->game->close();
+    //this->game->close();
+//    this->game->repaint();
+    nn_timer->stop();
 }
 
 int NeuralNetwork::get_game_points()

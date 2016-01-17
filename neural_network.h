@@ -3,6 +3,7 @@
 
 #include "game.h"
 #include <QObject>
+#include <QTimer>
 #include <QGraphicsView>
 
 #define NUMBER_OF_INPUTS 8
@@ -14,6 +15,7 @@ class NeuralNetwork: public QObject
 {
     Q_OBJECT
     Game * game;
+    QTimer * nn_timer;
     int game_time;
     int input_table[NUMBER_OF_INPUTS];
     int output_table[NUMBER_OF_OUTPUTS];

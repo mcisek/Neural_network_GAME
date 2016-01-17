@@ -35,11 +35,30 @@ Population::Population()
     timer->start(10);
 }
 
+Population::Population(Game *game)
+{
+    iterator = 0;
+    generate_random_population(game);
+
+    QTimer * timer = new QTimer();
+    connect(timer, SIGNAL(timeout()),this,SLOT(loop()));
+    timer->start(10);
+}
+
 void Population::generate_random_population()
 {
     for(int i=0; i<POPULATION_SIZE; i++)
     {
         this->population_table[i] = new Individual();
+        this->population_table[i]->generate_random_chromosome();
+    }
+}
+
+void Population::generate_random_population(Game *game)
+{
+    for(int i=0; i<POPULATION_SIZE; i++)
+    {
+        this->population_table[i] = new Individual(game);
         this->population_table[i]->generate_random_chromosome();
     }
 }

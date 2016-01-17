@@ -3,6 +3,7 @@
 
 #include "neural_network.h"
 #include <QObject>
+#include <QTimer>
 
 #define MUTATION_CHANCE 10
 #define MAX_GAME_TIME 100
@@ -13,9 +14,11 @@ class Individual: public QObject
     int game_state; //0 - not started; 1 - started; 2 - finished
     int evaluation;
     int game_time;
+    QTimer * timer;
     NeuralNetwork * neural_net;
 public:
     Individual();
+    Individual(Game * game);
     void generate_random_chromosome();
     void mutation();
     void set_chromosome_gene(int num, int value);
