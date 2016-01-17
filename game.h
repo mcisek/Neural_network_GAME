@@ -42,6 +42,7 @@ public:
     void game_restart();
     void set_r_flag(int i);
     int get_r_flag();
+    int get_points();
 };
 
 #endif // GAME

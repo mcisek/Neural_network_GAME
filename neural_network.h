@@ -14,6 +14,7 @@ class NeuralNetwork: public QObject
 {
     Q_OBJECT
     Game * game;
+    int game_time;
     int input_table[NUMBER_OF_INPUTS];
     int output_table[NUMBER_OF_OUTPUTS];
     int input_table_of_connections[NUMBER_OF_INPUTS][NUMBER_OF_NODES];
@@ -33,6 +34,9 @@ public:
     void generate_output();
     void set_chromosome_gene(int num, int value);
     int get_chromosome_gene(int num);
+    void start_game();
+    void close_game();
+    int get_game_points();
 public slots:
     void action();
 };

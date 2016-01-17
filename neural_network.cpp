@@ -7,7 +7,6 @@
 
 void NeuralNetwork::action()
 {
-    //        generate_random_chromosome();
 
     get_input_table();
     read_chromosome();
@@ -25,41 +24,38 @@ void NeuralNetwork::action()
         game->set_r_flag(0);
         generate_random_chromosome();
     }
+
     //    game->player_right();
     //    get_input_table();
 }
 
 NeuralNetwork::NeuralNetwork()
 {
-    Game * g = new Game();
-    this->game = g;
-    game->show();
+    game_time = 0;
 
-    QTimer * timer = new QTimer();
-    //connect(timer, SIGNAL(timeout()),this,SLOT(action()));
-    timer->start(50);
+//    Game * g = new Game();
+//    this->game = g;
+//    game->show();
 }
 
-NeuralNetwork::NeuralNetwork(Game *game)
-{
-    this->game = game;
+//NeuralNetwork::NeuralNetwork(Game *game)
+//{
+//    this->game = game;
 
-    QTimer * timer = new QTimer();
-    //connect(timer, SIGNAL(timeout()),this,SLOT(action()));
-    timer->start(50);
+//    QTimer * timer = new QTimer();
+//    connect(timer, SIGNAL(timeout()),this,SLOT(action()));
+//    timer->start(50);
 
-    generate_random_chromosome();
-    print_chromosome();
-}
+//    generate_random_chromosome();
+//    print_chromosome();
+//}
+
 
 NeuralNetwork::NeuralNetwork(int chr[CHROMOSOME_LENGTH])
 {
     for(int i=0; i<CHROMOSOME_LENGTH; i++)
         chromosome[i]=chr[i];
 
-    Game * g = new Game();
-    this->game = g;
-    game->show();
 
     QTimer * timer = new QTimer();
     //connect(timer, SIGNAL(timeout()),this,SLOT(action()));
@@ -103,7 +99,7 @@ void NeuralNetwork::print_chromosome()
         qDebug() << chromosome[i] << " ";
 }
 
-//INPUT MODEL::
+//INPUT MODEL:
 // . . . . . . . . . . . . . . . .
 // . . . . . . . . . . . . . . . .
 // . . . . . . . . . . . . . . . .
@@ -200,6 +196,28 @@ int NeuralNetwork::get_chromosome_gene(int num)
     if(num < CHROMOSOME_LENGTH)
         tmp = this->chromosome[num];
     return tmp;
+}
+
+void NeuralNetwork::start_game()
+{
+    Game * g = new Game();
+    this->game = g;
+    game->show();
+
+    QTimer * timer = new QTimer();
+    connect(timer, SIGNAL(timeout()),this,SLOT(action()));
+    timer->start(50);
+}
+
+void NeuralNetwork::close_game()
+{
+    this->game->close();
+}
+
+int NeuralNetwork::get_game_points()
+{
+    int x = this->game->get_points();
+    return x;
 }
 
 void NeuralNetwork::set_chromosome_gene(int num, int value)

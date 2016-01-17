@@ -3,7 +3,7 @@
 #include <QGraphicsView>
 
 #include <time.h>
-#include "neural_network.h"
+#include "population.h"
 
 int main(int argc, char *argv[])
 {
@@ -14,10 +14,13 @@ int main(int argc, char *argv[])
 //    Game * game;
 //    game = new Game();
 
-    //NeuralNetwork * nn = new NeuralNetwork(game);
-    //game->show();
+//    NeuralNetwork * nn = new NeuralNetwork(game);
+//    game->show();
 
-    new NeuralNetwork();
+//    new NeuralNetwork();
+//    new Population();
+    Individual * in = new Individual();
+//    in->start_game();
 
     return a.exec();
 }

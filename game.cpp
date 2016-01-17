@@ -102,6 +102,12 @@ int Game::get_r_flag()
     return restart_flag;
 }
 
+int Game::get_points()
+{
+    int x = this->points;
+    return x;
+}
+
 void Game::keyPressEvent(QKeyEvent * event)
 {
     //LEFT
