@@ -18,9 +18,10 @@ int main(int argc, char *argv[])
 //    game->show();
 
 //    new NeuralNetwork();
-//    new Population();
-    Individual * in = new Individual();
+    new Population();
+//    Individual * in = new Individual();
 //    in->start_game();
+
 
     return a.exec();
 }

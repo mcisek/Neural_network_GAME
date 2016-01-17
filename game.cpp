@@ -62,7 +62,7 @@ void Game::player_right()
             number_of_steps++;
             points ++;
         }
-        qDebug() << "POINTS: " << points;
+//        qDebug() << "POINTS: " << points;
     }
 }
 
@@ -129,8 +129,6 @@ void Game::keyPressEvent(QKeyEvent * event)
     else if (event->key() == Qt::Key_Space)
     {
         //player_shoot();
-        qDebug() << "CHROMOSOME RESTART";
-        game_restart();
     }
 }
 

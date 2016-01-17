@@ -19,14 +19,14 @@ void Individual::individual_game()
     {
         this->evaluation = this->neural_net->get_game_points();
         this->neural_net->close_game();
-        this->is_game_finished = 1;
+        this->game_state = 2;
     }
 }
 
 
 Individual::Individual()
 {
-    is_game_finished = 0;
+    game_state = 0;
     evaluation = 0;
     game_time = 0;
 
@@ -70,7 +70,7 @@ int Individual::get_evaluation()
 
 void Individual::start_game()
 {
-    is_game_finished = 0;
+    game_state = 1;
     this->neural_net->start_game();
 
     QTimer * timer = new QTimer();
@@ -80,7 +80,7 @@ void Individual::start_game()
 
 int Individual::get_game_state()
 {
-    int x = this->is_game_finished;
+    int x = this->game_state;
     return x;
 }
 

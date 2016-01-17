@@ -10,7 +10,7 @@
 class Individual: public QObject
 {
     Q_OBJECT
-    int is_game_finished;
+    int game_state; //0 - not started; 1 - started; 2 - finished
     int evaluation;
     int game_time;
     NeuralNetwork * neural_net;

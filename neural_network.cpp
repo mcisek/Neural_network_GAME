@@ -33,9 +33,9 @@ NeuralNetwork::NeuralNetwork()
 {
     game_time = 0;
 
-//    Game * g = new Game();
-//    this->game = g;
-//    game->show();
+    //    Game * g = new Game();
+    //    this->game = g;
+    //    game->show();
 }
 
 //NeuralNetwork::NeuralNetwork(Game *game)
