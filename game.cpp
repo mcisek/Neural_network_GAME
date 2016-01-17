@@ -43,6 +43,42 @@ Game::Game()
     scene->addItem(player);
 }
 
+void Game::back_to_begin()
+{
+    points = 0;
+    number_of_columns = 0;
+    number_of_steps = 0;
+    restart_flag = 0;
+
+    scene->removeItem(player);
+
+    for(int i = 0; i<WIDTH; i++)
+    {
+        for(int j = 0; j<HEIGHT; j++)
+        {
+            scene->removeItem(obstacles[i][j]);
+        }
+    }
+
+    delete level_map;
+    level_map = new Map();
+
+    for(int i=0;i<WIDTH;i++)
+    {
+        for(int j=0;j<HEIGHT;j++)
+        {
+            int type = level_map->get_type(i,j);
+            obstacles[i][j] = new Object(type,40*i,40*j);
+            obstacles[i][j]->setBrush(* object_brush);
+            scene->addItem(obstacles[i][j]);
+        }
+    }
+
+    delete player;
+    player = new Player(60, 60);
+    scene->addItem(player);
+}
+
 void Game::player_right()
 {
     if(!player->is_colliding_right())
@@ -131,6 +167,7 @@ void Game::keyPressEvent(QKeyEvent * event)
         //player_shoot();
     }
 }
+
 
 void Game::move_obstacles_left(int how_many_px)
 {

@@ -9,6 +9,7 @@ QString fileName = "C:/map_file"; //path to file with game map
 
 Map::Map()
 {
+    steps = 0;
     QFile file(fileName);
 
     if(!file.open(QFile::ReadOnly | QFile::Text))
@@ -33,6 +34,7 @@ Map::Map()
 
     file.close();
 }
+
 
 int Map::get_type(int x, int y)
 {

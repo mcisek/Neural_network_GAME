@@ -208,6 +208,8 @@ void NeuralNetwork::start_game()
 {
 //    Game * g = new Game();
 //    this->game = g;
+//    this->game = new Game();
+    this->game->back_to_begin();
     this->game->show();
 
     this->nn_timer = new QTimer();
@@ -219,6 +221,7 @@ void NeuralNetwork::close_game()
 {
     //this->game->close();
 //    this->game->repaint();
+    this->game->back_to_begin();
     nn_timer->stop();
 }
 

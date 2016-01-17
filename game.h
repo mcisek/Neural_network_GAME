@@ -28,6 +28,8 @@ public:
 
     Game();
     void keyPressEvent(QKeyEvent * event);
+    void back_to_begin();
+    void remove_qobjects();
 
     void move_obstacles_left(int how_many_px);
     void get_new_column_from_map();

@@ -17,7 +17,7 @@ Player::Player()
 {
     setRect(0,0,40,40);
     setBrush(* new QBrush(Qt::black));
-    is_in_the_air = true;
+    is_in_the_air = false;
 
     QTimer * timer = new QTimer();
     connect(timer, SIGNAL(timeout()),this,SLOT(fall_down()));
@@ -104,7 +104,10 @@ bool Player::is_colliding_down()
 void Player::allow_jump()
 {
     if(!is_in_the_air)
+    {
+        vertical_steps = 0;
         jumping = true;
+    }
 }
 
 void Player::fall_down()
