@@ -6,6 +6,7 @@
 #include <QTimer>
 
 QString populationFileName = "C:/population_file";
+QString populationFileNameTest = "C:/population_file_test";
 
 void Population::loop()
 {
@@ -24,6 +25,7 @@ void Population::loop()
     }
     if(iterator == POPULATION_SIZE)
     {
+        //        this->load_from_file();
         this->save_to_file();
         iterator++;
     }
@@ -33,7 +35,11 @@ Population::Population()
 {
     //load_from_file();
     iterator = 0;
-    generate_random_population();
+    //    generate_random_population();
+    //    this->load_from_file();
+
+    Game * game = new Game();
+    generate_one_gene_population(game, 1);
 
     QTimer * timer = new QTimer();
     connect(timer, SIGNAL(timeout()),this,SLOT(loop()));
@@ -43,7 +49,8 @@ Population::Population()
 Population::Population(Game *game)
 {
     iterator = 0;
-    generate_random_population(game);
+    //    generate_random_population(game);
+    generate_one_gene_population(game, 1);
 
     QTimer * timer = new QTimer();
     connect(timer, SIGNAL(timeout()),this,SLOT(loop()));
@@ -68,6 +75,15 @@ void Population::generate_random_population(Game *game)
     }
 }
 
+void Population::generate_one_gene_population(Game *game, int j)
+{
+    for(int i=0; i<POPULATION_SIZE; i++)
+    {
+        this->population_table[i] = new Individual(game);
+        this->population_table[i]->generate_one_gene_chromosome(j);
+    }
+}
+
 void Population::save_to_file()
 {
     QFile file(populationFileName);
@@ -80,6 +96,7 @@ void Population::save_to_file()
 
     for(int i=0;i<POPULATION_SIZE;i++)
     {
+        //saving chromosome
         for(int j=0; j<CHROMOSOME_LENGTH; j++)
         {
             char b = ((char) this->population_table[i]->get_chromosome_gene(j)) + 48;
@@ -93,7 +110,7 @@ void Population::save_to_file()
 
 void Population::load_from_file()
 {
-    QFile file(populationFileName);
+    QFile file(populationFileNameTest);
 
     if(!file.open(QFile::ReadOnly | QFile::Text))
     {
@@ -101,32 +118,35 @@ void Population::load_from_file()
         return;
     }
 
-    int x = 1;
-
-    while(x==1)
+    for(int i = 0; i<POPULATION_SIZE; i++)
     {
-        char a;
-        file.getChar(&a);
-        if(a != '!')
-            x = 0;
-
+        for(int j=0; j<CHROMOSOME_LENGTH; j++)
+        {
+            char a;
+            file.getChar(&a);
+            if(a == '\n')
+                file.getChar(&a);
+            else if(a == '1')
+                this->population_table[i]->set_chromosome_gene(j,1);
+            else if(a == '0')
+                this->population_table[i]->set_chromosome_gene(j,0);
+        }
     }
 
-    //    for(int i = 0; i<LEVEL_HEIGHT; i++)
-    //    {
-    //        for(int j=0; j<LEVEL_WIDTH; j++)
-    //        {
-    //            char a;
-    //            file.getChar(&a);
-    //            if(a == ' ' || a == '\n')
-    //                file.getChar(&a);
-
-    //            int b = (int) a - 48;
-    //            map_table[j][i] = b;
-    //        }
-    //    }
-
     file.close();
+}
+
+void Population::print_population()
+{
+    for(int i=0; i<POPULATION_SIZE; i++)
+    {
+        qDebug() << "INDIVIDUAL: " << i;
+
+        for(int j=0; j<CHROMOSOME_LENGTH; j++)
+        {
+            qDebug() << this->population_table[i]->get_chromosome_gene(j);
+        }
+    }
 }
 
 void Population::hybridization(int a, int b)

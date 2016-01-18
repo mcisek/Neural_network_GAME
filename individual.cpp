@@ -52,6 +52,11 @@ void Individual::generate_random_chromosome()
     this->neural_net->generate_random_chromosome();
 }
 
+void Individual::generate_one_gene_chromosome(int i)
+{
+    this->neural_net->generate_one_gene_chromosome(i);
+}
+
 void Individual::mutation()
 {
     if(rand()%100 <= MUTATION_CHANCE)

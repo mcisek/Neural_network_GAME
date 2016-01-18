@@ -29,6 +29,7 @@ public:
     NeuralNetwork(int chr[CHROMOSOME_LENGTH]);
     void create_chromosome();
     void generate_random_chromosome();
+    void generate_one_gene_chromosome(int i);
     void read_chromosome();
     void print_chromosome();
     void get_input_table();

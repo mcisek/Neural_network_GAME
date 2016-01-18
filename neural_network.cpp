@@ -79,6 +79,15 @@ void NeuralNetwork::generate_random_chromosome()
         chromosome[i]=rand()%2; //generate 0 or 1
 }
 
+void NeuralNetwork::generate_one_gene_chromosome(int j)
+{
+    if(j == 1 || j == 0)
+    {
+        for(int i=0; i<CHROMOSOME_LENGTH; i++)
+            chromosome[i]=j; //generate 0 or 1
+    }
+}
+
 void NeuralNetwork::read_chromosome()
 {
     for(int i=0; i<NUMBER_OF_INPUTS; i++)

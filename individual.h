@@ -20,6 +20,7 @@ public:
     Individual();
     Individual(Game * game);
     void generate_random_chromosome();
+    void generate_one_gene_chromosome(int i);
     void mutation();
     void set_chromosome_gene(int num, int value);
     int get_chromosome_gene(int num);
