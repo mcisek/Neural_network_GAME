@@ -26,7 +26,12 @@ void Population::loop()
     if(iterator == POPULATION_SIZE)
     {
         //        this->load_from_file();
-        this->save_to_file();
+        //this->save_to_file();
+        this->selection();
+        for(int i = 1; i < POPULATION_SIZE; i++)
+            child_population->hybridization(i-1,i);
+        for(int i = 1; i < POPULATION_SIZE; i++)
+            child_population->mutation(i);
         iterator++;
     }
 }
@@ -35,11 +40,11 @@ Population::Population()
 {
     //load_from_file();
     iterator = 0;
-    //    generate_random_population();
+    generate_random_population();
     //    this->load_from_file();
 
-    Game * game = new Game();
-    generate_one_gene_population(game, 1);
+    //    Game * game = new Game();
+    //    generate_one_gene_population(game, 1);
 
     QTimer * timer = new QTimer();
     connect(timer, SIGNAL(timeout()),this,SLOT(loop()));
@@ -49,8 +54,9 @@ Population::Population()
 Population::Population(Game *game)
 {
     iterator = 0;
-    //    generate_random_population(game);
-    generate_one_gene_population(game, 1);
+    generate_random_population(game);
+    //    generate_one_gene_population(game, 1);
+    this->load_from_file();
 
     QTimer * timer = new QTimer();
     connect(timer, SIGNAL(timeout()),this,SLOT(loop()));
@@ -151,15 +157,53 @@ void Population::print_population()
 
 void Population::hybridization(int a, int b)
 {
-    if(a < POPULATION_SIZE && b < POPULATION_SIZE)
+    if(rand()%100 <= HYBRIDIZATION_CHANCE)
+    {
+        if(a < POPULATION_SIZE && b < POPULATION_SIZE)
+        {
+            int x = rand() % CHROMOSOME_LENGTH;
+            for(x; x < CHROMOSOME_LENGTH; x++)
+            {
+                int tmp = this->population_table[a]->get_chromosome_gene(x);
+                int val = this->population_table[b]->get_chromosome_gene(x);
+                this->population_table[a]->set_chromosome_gene(x,val);
+                this->population_table[b]->set_chromosome_gene(x,tmp);
+            }
+        }
+    }
+}
+
+void Population::mutation(int a)
+{
+    if(rand() % 100 <= MUTATION_CHANCE)
     {
         int x = rand() % CHROMOSOME_LENGTH;
-        for(x; x < CHROMOSOME_LENGTH; x++)
+        if(this->population_table[a]->get_chromosome_gene(x) == 1)
+            this->population_table[a]->set_chromosome_gene(x,0);
+        else
+            this->population_table[a]->set_chromosome_gene(x,1);
+    }
+}
+
+void Population::selection()
+{
+    int evaluation_sum = 0;
+    for(int i=0; i<POPULATION_SIZE; i++)
+    {
+        evaluation_sum = evaluation_sum + this->population_table[i]->get_evaluation();
+    }
+
+    child_population = new Population();
+
+    for(int i=0; i<POPULATION_SIZE; i++)
+    {
+        int rnd = rand() % evaluation_sum;
+        int part = 0;//this->population_table[j]->get_evaluation();
+        for(int j=0; j<POPULATION_SIZE; j++)
         {
-            int tmp = this->population_table[a]->get_chromosome_gene(x);
-            int val = this->population_table[b]->get_chromosome_gene(x);
-            this->population_table[a]->set_chromosome_gene(x,val);
-            this->population_table[b]->set_chromosome_gene(x,tmp);
+            part = part + this->population_table[j]->get_evaluation();
+            if(rnd <= part)
+                child_population->population_table[i] = this->population_table[j];
         }
     }
 }

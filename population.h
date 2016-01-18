@@ -11,6 +11,7 @@ class Population: public QObject
     Q_OBJECT
     int iterator;
     Individual * population_table[POPULATION_SIZE];
+    Population * child_population;
 public:
     Population();
     Population(Game *game);
@@ -21,6 +22,8 @@ public:
     void load_from_file();
     void print_population();
     void hybridization(int a, int b);
+    void mutation(int a);
+    void selection();
 public slots:
     void loop();
 };
