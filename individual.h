@@ -6,7 +6,7 @@
 #include <QTimer>
 
 #define MUTATION_CHANCE 10
-#define MAX_GAME_TIME 100
+#define MAX_GAME_TIME 10 //100
 
 class Individual: public QObject
 {

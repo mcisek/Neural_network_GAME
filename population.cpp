@@ -5,7 +5,7 @@
 #include <QTextStream>
 #include <QTimer>
 
-QString fileName2 = "C:/population_file";
+QString populationFileName = "C:/population_file";
 
 void Population::loop()
 {
@@ -21,6 +21,11 @@ void Population::loop()
             qDebug() << "INDIVIDUAL END: " << iterator << " ";
             iterator++;
         }
+    }
+    if(iterator == POPULATION_SIZE)
+    {
+        this->save_to_file();
+        iterator++;
     }
 }
 
@@ -65,28 +70,22 @@ void Population::generate_random_population(Game *game)
 
 void Population::save_to_file()
 {
-    QFile file(fileName2);
+    QFile file(populationFileName);
 
-    if(!file.open(QFile::ReadOnly | QFile::Text))
+    if(!file.open(QFile::WriteOnly | QFile::Text))
     {
         //qDebug() << "couldnt open map_file to read";
         return;
     }
 
-    int x = 1;
-    while(x==1)
+    for(int i=0;i<POPULATION_SIZE;i++)
     {
-        char a;
-        file.getChar(&a);
-        if(a == EOF)
-            x = 0;
-    }
-
-    int i;
-    for(i=0;i<10;i++)
-    {
-        char b = (char) i;
-        file.putChar(b);
+        for(int j=0; j<CHROMOSOME_LENGTH; j++)
+        {
+            char b = ((char) this->population_table[i]->get_chromosome_gene(j)) + 48;
+            file.putChar(b);
+        }
+        file.putChar('\n');
     }
 
     file.close();
@@ -94,7 +93,7 @@ void Population::save_to_file()
 
 void Population::load_from_file()
 {
-    QFile file(fileName2);
+    QFile file(populationFileName);
 
     if(!file.open(QFile::ReadOnly | QFile::Text))
     {

@@ -4,7 +4,7 @@
 #include "individual.h"
 #include <QObject>
 
-#define POPULATION_SIZE 10
+#define POPULATION_SIZE 3
 
 class Population: public QObject
 {
