@@ -5,8 +5,6 @@
 #include <QObject>
 #include <QTimer>
 
-#define MUTATION_CHANCE 10
-#define HYBRIDIZATION_CHANCE 25
 #define MAX_GAME_TIME 10 //100
 
 class Individual: public QObject

@@ -27,11 +27,13 @@ void Population::loop()
     {
         //        this->load_from_file();
         //this->save_to_file();
-        this->selection();
-        for(int i = 1; i < POPULATION_SIZE; i++)
-            child_population->hybridization(i-1,i);
-        for(int i = 1; i < POPULATION_SIZE; i++)
-            child_population->mutation(i);
+//        this->selection();
+        //        for(int i = 1; i < POPULATION_SIZE; i++)
+        //            child_population->hybridization(i-1,i);
+        //        for(int i = 1; i < POPULATION_SIZE; i++)
+        //            child_population->mutation(i);
+//        this->selection();
+//        this->save_child_population_to_file();
         iterator++;
     }
 }
@@ -46,7 +48,7 @@ Population::Population()
     //    Game * game = new Game();
     //    generate_one_gene_population(game, 1);
 
-    QTimer * timer = new QTimer();
+    this->timer = new QTimer();
     connect(timer, SIGNAL(timeout()),this,SLOT(loop()));
     timer->start(10);
 }
@@ -54,11 +56,19 @@ Population::Population()
 Population::Population(Game *game)
 {
     iterator = 0;
-    generate_random_population(game);
-    //    generate_one_gene_population(game, 1);
-    this->load_from_file();
+    this->game = game;
+    //    generate_random_population(this->game);
+    generate_one_gene_population(game, 0);
+    //    this->load_from_file();
 
-    QTimer * timer = new QTimer();
+//    for(int i=1; i<POPULATION_SIZE; i++)
+//        this->hybridization(i-1,i);
+    for(int i=0; i<POPULATION_SIZE; i++)
+        this->mutation(i);
+
+    this->save_to_file();
+
+    this->timer = new QTimer();
     connect(timer, SIGNAL(timeout()),this,SLOT(loop()));
     timer->start(10);
 }
@@ -112,6 +122,32 @@ void Population::save_to_file()
     }
 
     file.close();
+}
+
+void Population::save_child_population_to_file()
+{
+
+    QFile file(populationFileName);
+
+    if(!file.open(QFile::WriteOnly | QFile::Text))
+    {
+        //qDebug() << "couldnt open map_file to read";
+        return;
+    }
+
+    for(int i=0;i<POPULATION_SIZE;i++)
+    {
+        //saving chromosome
+        for(int j=0; j<CHROMOSOME_LENGTH; j++)
+        {
+            char b = ((char) this->child_population_table[i]->get_chromosome_gene(j)) + 48;
+            file.putChar(b);
+        }
+        file.putChar('\n');
+    }
+
+    file.close();
+
 }
 
 void Population::load_from_file()
@@ -193,8 +229,6 @@ void Population::selection()
         evaluation_sum = evaluation_sum + this->population_table[i]->get_evaluation();
     }
 
-    child_population = new Population();
-
     for(int i=0; i<POPULATION_SIZE; i++)
     {
         int rnd = rand() % evaluation_sum;
@@ -203,8 +237,23 @@ void Population::selection()
         {
             part = part + this->population_table[j]->get_evaluation();
             if(rnd <= part)
-                child_population->population_table[i] = this->population_table[j];
+                this->child_population_table[i] = this->population_table[j];
         }
     }
+
+
+    //    //child_population = new Population();
+
+    //    for(int i=0; i<POPULATION_SIZE; i++)
+    //    {
+    //        int rnd = rand() % evaluation_sum;
+    //        int part = 0;//this->population_table[j]->get_evaluation();
+    //        for(int j=0; j<POPULATION_SIZE; j++)
+    //        {
+    //            part = part + this->population_table[j]->get_evaluation();
+    //            if(rnd <= part)
+    //                child_population->population_table[i] = this->population_table[j];
+    //        }
+    //    }
 }
 
