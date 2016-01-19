@@ -14,7 +14,7 @@ QBrush * object_brush = new QBrush(Qt::green);
 
 Game::Game()
 {
-    points = 0;
+    points = 1;
     restart_flag = 0;
 
     scene = new QGraphicsScene();
@@ -45,7 +45,7 @@ Game::Game()
 
 void Game::back_to_begin()
 {
-    points = 0;
+    points = 1;
     number_of_columns = 0;
     number_of_steps = 0;
     restart_flag = 0;

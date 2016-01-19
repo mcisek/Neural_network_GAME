@@ -28,7 +28,7 @@ void Individual::individual_game()
 Individual::Individual()
 {
     game_state = 0;
-    evaluation = 0;
+    evaluation = 1;
     game_time = 0;
 
     NeuralNetwork * nn = new NeuralNetwork();
@@ -39,7 +39,7 @@ Individual::Individual()
 Individual::Individual(Game *game)
 {
     game_state = 0;
-    evaluation = 0;
+    evaluation = 1;
     game_time = 0;
 
     NeuralNetwork * nn = new NeuralNetwork(game);

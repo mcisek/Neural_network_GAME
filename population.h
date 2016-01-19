@@ -6,7 +6,7 @@
 
 #define POPULATION_SIZE 3
 #define MUTATION_CHANCE 15 //<100
-#define HYBRIDIZATION_CHANCE 25 //<100
+#define HYBRIDIZATION_CHANCE 95 //<100
 
 class Population: public QObject
 {
