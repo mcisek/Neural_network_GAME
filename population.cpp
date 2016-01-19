@@ -27,13 +27,13 @@ void Population::loop()
     {
         //        this->load_from_file();
         //this->save_to_file();
-//        this->selection();
+        //        this->selection();
         //        for(int i = 1; i < POPULATION_SIZE; i++)
         //            child_population->hybridization(i-1,i);
         //        for(int i = 1; i < POPULATION_SIZE; i++)
         //            child_population->mutation(i);
-//        this->selection();
-//        this->save_child_population_to_file();
+        this->selection();
+        //        this->save_child_population_to_file();
         iterator++;
     }
 }
@@ -59,13 +59,14 @@ Population::Population(Game *game)
     this->game = game;
     //    generate_random_population(this->game);
     generate_one_gene_population(game, 0);
-    //    this->load_from_file();
+    this->load_from_file();
 
-//    for(int i=1; i<POPULATION_SIZE; i++)
-//        this->hybridization(i-1,i);
-    for(int i=0; i<POPULATION_SIZE; i++)
-        this->mutation(i);
+    //    for(int i=1; i<POPULATION_SIZE; i++)
+    //        this->hybridization(i-1,i);
+//    for(int i=0; i<POPULATION_SIZE; i++);
+    //        this->mutation(i);
 
+    this->print_population();
     this->save_to_file();
 
     this->timer = new QTimer();
@@ -78,6 +79,7 @@ void Population::generate_random_population()
     for(int i=0; i<POPULATION_SIZE; i++)
     {
         this->population_table[i] = new Individual();
+        this->child_population_table[i] = new Individual();
         this->population_table[i]->generate_random_chromosome();
     }
 }
@@ -87,6 +89,7 @@ void Population::generate_random_population(Game *game)
     for(int i=0; i<POPULATION_SIZE; i++)
     {
         this->population_table[i] = new Individual(game);
+        this->child_population_table[i] = new Individual(game);
         this->population_table[i]->generate_random_chromosome();
     }
 }
@@ -96,6 +99,7 @@ void Population::generate_one_gene_population(Game *game, int j)
     for(int i=0; i<POPULATION_SIZE; i++)
     {
         this->population_table[i] = new Individual(game);
+        this->child_population_table[i] = new Individual(game);
         this->population_table[i]->generate_one_gene_chromosome(j);
     }
 }
@@ -166,9 +170,9 @@ void Population::load_from_file()
         {
             char a;
             file.getChar(&a);
-            if(a == '\n')
+            if(a == '\n' || a == ' ')
                 file.getChar(&a);
-            else if(a == '1')
+            if(a == '1')
                 this->population_table[i]->set_chromosome_gene(j,1);
             else if(a == '0')
                 this->population_table[i]->set_chromosome_gene(j,0);
@@ -225,35 +229,40 @@ void Population::selection()
 {
     int evaluation_sum = 0;
     for(int i=0; i<POPULATION_SIZE; i++)
-    {
         evaluation_sum = evaluation_sum + this->population_table[i]->get_evaluation();
-    }
 
-    for(int i=0; i<POPULATION_SIZE; i++)
+    qDebug() << "Evaluation sum: " << evaluation_sum ;
+
+    if(evaluation_sum != 0)
     {
-        int rnd = rand() % evaluation_sum;
-        int part = 0;//this->population_table[j]->get_evaluation();
-        for(int j=0; j<POPULATION_SIZE; j++)
+        //qDebug() << "1. ";
+        for(int i=0; i<POPULATION_SIZE; i++)
         {
-            part = part + this->population_table[j]->get_evaluation();
-            if(rnd <= part)
-                this->child_population_table[i] = this->population_table[j];
+            int rnd = rand() % evaluation_sum;
+            int part = 0;//this->population_table[j]->get_evaluation();
+            for(int j=0; j<POPULATION_SIZE; j++)
+            {
+                part = part + this->population_table[j]->get_evaluation();
+                if(rnd <= part) //BUG!!! true in most of cases
+                {
+                    if(this->population_table[j]->get_evaluation() != 0)
+                    {
+                        for(int z=0; z<CHROMOSOME_LENGTH; z++)
+                            this->child_population_table[i]->set_chromosome_gene(z,this->population_table[j]->get_chromosome_gene(z));
+                        return;// change to for(){} set/get_gene
+                    }
+                }
+            }
         }
     }
-
-
-    //    //child_population = new Population();
-
-    //    for(int i=0; i<POPULATION_SIZE; i++)
-    //    {
-    //        int rnd = rand() % evaluation_sum;
-    //        int part = 0;//this->population_table[j]->get_evaluation();
-    //        for(int j=0; j<POPULATION_SIZE; j++)
-    //        {
-    //            part = part + this->population_table[j]->get_evaluation();
-    //            if(rnd <= part)
-    //                child_population->population_table[i] = this->population_table[j];
-    //        }
-    //    }
+    else
+    {
+        // qDebug() << "2.";
+        for(int i=0;i<POPULATION_SIZE;i++)
+        {
+            for(int j=0;j<CHROMOSOME_LENGTH;j++)
+                this->child_population_table[i]->set_chromosome_gene(j,this->population_table[i]->get_chromosome_gene(j));
+        }
+        //qDebug() << "3.";
+    }
 }
-
