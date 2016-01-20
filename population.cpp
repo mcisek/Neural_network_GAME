@@ -55,8 +55,9 @@ Population::Population(Game *game)
 {
     iterator = 0;
     this->game = game;
-    generate_one_gene_population(game, 0);
-    this->load_from_file();
+    generate_random_population(game);
+//    generate_one_gene_population(game, 0);
+//    this->load_from_file();
 
     for(int i=1; i<POPULATION_SIZE; i++)
         this->hybridization(i-1,i);

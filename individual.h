@@ -5,7 +5,7 @@
 #include <QObject>
 #include <QTimer>
 
-#define MAX_GAME_TIME 100
+#define MAX_GAME_TIME 10
 
 class Individual: public QObject
 {
