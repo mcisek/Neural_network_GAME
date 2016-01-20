@@ -44,7 +44,7 @@ Individual::Individual(Game *game)
 
     NeuralNetwork * nn = new NeuralNetwork(game);
     this->neural_net = nn;
-    this->neural_net->generate_random_chromosome();
+    this->neural_net->generate_one_gene_chromosome(0);
 }
 
 void Individual::generate_random_chromosome()

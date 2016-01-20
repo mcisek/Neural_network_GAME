@@ -9,15 +9,14 @@ void NeuralNetwork::action()
 {
 
     get_input_table();
-
-    print_input_table();
-    print_nodes_table();
-    print_output_table();
-
     read_chromosome();
     get_nodes_values();
     generate_output();
 
+//    print_chromosome();
+//    print_input_table();
+//    print_nodes_table();
+//    print_output_table();
 
     if(output_table[0]==1)
         game->player_right();
@@ -28,7 +27,7 @@ void NeuralNetwork::action()
     if(game->get_r_flag() == 1)
     {
         game->set_r_flag(0);
-        generate_random_chromosome();
+//        generate_random_chromosome();
     }
 
     //    game->player_right();
@@ -48,6 +47,8 @@ NeuralNetwork::NeuralNetwork(Game *game)
 {
     game_time = 0;
     this->game = game;
+
+    generate_one_gene_chromosome(0);
 
     QTimer * timer = new QTimer();
     connect(timer, SIGNAL(timeout()),this,SLOT(action()));
@@ -72,7 +73,6 @@ NeuralNetwork::NeuralNetwork(int chr[CHROMOSOME_LENGTH])
     for(int i=0; i<CHROMOSOME_LENGTH; i++)
         chromosome[i]=chr[i];
 
-
     QTimer * timer = new QTimer();
     //connect(timer, SIGNAL(timeout()),this,SLOT(action()));
     timer->start(50);
@@ -94,7 +94,7 @@ void NeuralNetwork::generate_one_gene_chromosome(int j)
     if(j == 1 || j == 0)
     {
         for(int i=0; i<CHROMOSOME_LENGTH; i++)
-            chromosome[i]=j; //generate 0 or 1
+            chromosome[i]=j;
     }
 }
 
@@ -116,12 +116,6 @@ void NeuralNetwork::read_chromosome()
             nodes_table_of_connections[i][j] = chromosome[x];
         }
     }
-}
-
-void NeuralNetwork::print_chromosome()
-{
-    for(int i=0; i<CHROMOSOME_LENGTH; i++)
-        qDebug() << chromosome[i] << " ";
 }
 
 //INPUT MODEL:
@@ -190,27 +184,6 @@ void NeuralNetwork::get_input_table()
     }
 }
 
-void NeuralNetwork::print_input_table()
-{
-    qDebug() << "INPUT TABLE: ";
-    for(int i=0; i<NUMBER_OF_INPUTS; i++)
-        qDebug() << i << ". - " << input_table[i];
-}
-
-void NeuralNetwork::print_output_table()
-{
-    qDebug() << "OUTPUT TABLE: ";
-    for(int i=0; i<NUMBER_OF_OUTPUTS; i++)
-        qDebug() << i << ". - " << output_table[i];
-}
-
-void NeuralNetwork::print_nodes_table()
-{
-    qDebug() << "NODES TABLE: ";
-    for(int i=0; i<NUMBER_OF_NODES; i++)
-        qDebug() << i << ". - " << nodes_values[i];
-}
-
 void NeuralNetwork::get_nodes_values()
 {
     for(int j=0; j<NUMBER_OF_NODES; j++)
@@ -245,12 +218,49 @@ void NeuralNetwork::generate_output()
     }
 }
 
+void NeuralNetwork::print_input_table()
+{
+    qDebug() << "INPUT TABLE: ";
+    for(int i=0; i<NUMBER_OF_INPUTS; i++)
+        qDebug() << i << ". - " << input_table[i];
+}
+
+void NeuralNetwork::print_output_table()
+{
+    qDebug() << "OUTPUT TABLE: ";
+    for(int i=0; i<NUMBER_OF_OUTPUTS; i++)
+        qDebug() << i << ". - " << output_table[i];
+}
+
+void NeuralNetwork::print_nodes_table()
+{
+    qDebug() << "NODES TABLE: ";
+    for(int i=0; i<NUMBER_OF_NODES; i++)
+        qDebug() << i << ". - " << nodes_values[i];
+}
+
+void NeuralNetwork::print_chromosome()
+{
+    qDebug() << "CHROMOSOME: ";
+    for(int i=0; i<CHROMOSOME_LENGTH; i++)
+        qDebug() << i << ". - " << chromosome[i];
+}
+
 int NeuralNetwork::get_chromosome_gene(int num)
 {
     int tmp = -1;
     if(num < CHROMOSOME_LENGTH)
         tmp = this->chromosome[num];
     return tmp;
+}
+
+void NeuralNetwork::set_chromosome_gene(int num, int value)
+{
+    if(num < CHROMOSOME_LENGTH)
+    {
+        if(value == 1 || value == 0)
+            this->chromosome[num] = value;
+    }
 }
 
 void NeuralNetwork::start_game()
@@ -278,13 +288,4 @@ int NeuralNetwork::get_game_points()
 {
     int x = this->game->get_points();
     return x;
-}
-
-void NeuralNetwork::set_chromosome_gene(int num, int value)
-{
-    if(num < CHROMOSOME_LENGTH)
-    {
-        if(value == 1 || value == 0)
-            this->chromosome[num] = value;
-    }
 }

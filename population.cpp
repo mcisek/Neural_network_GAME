@@ -25,16 +25,14 @@ void Population::loop()
     }
     if(iterator == POPULATION_SIZE)
     {
-        //        this->load_from_file();
-        //this->save_to_file();
-        //        this->selection();
-        //        for(int i = 1; i < POPULATION_SIZE; i++)
-        //            child_population->hybridization(i-1,i);
-        //        for(int i = 1; i < POPULATION_SIZE; i++)
-        //            child_population->mutation(i);
         this->selection();
-                this->save_child_population_to_file();
+        this->save_child_population_to_file();
         iterator++;
+    }
+    else if(iterator == POPULATION_SIZE+1)
+    {
+        this->timer->stop();
+        new Population(this->game);
     }
 }
 
@@ -43,7 +41,7 @@ Population::Population()
     //load_from_file();
     iterator = 0;
     generate_random_population();
-    //    this->load_from_file();
+    this->load_from_file();
 
     //    Game * game = new Game();
     //    generate_one_gene_population(game, 1);
@@ -57,17 +55,16 @@ Population::Population(Game *game)
 {
     iterator = 0;
     this->game = game;
-    //    generate_random_population(this->game);
     generate_one_gene_population(game, 0);
     this->load_from_file();
 
-//    for(int i=1; i<POPULATION_SIZE; i++)
-//        this->hybridization(i-1,i);
-    //    for(int i=0; i<POPULATION_SIZE; i++);
-    //        this->mutation(i);
+    for(int i=1; i<POPULATION_SIZE; i++)
+        this->hybridization(i-1,i);
+    for(int i=0; i<POPULATION_SIZE; i++)
+        this->mutation(i);
 
-//    this->print_population();
-//    this->save_to_file();
+    //    this->print_population();
+    //    this->save_to_file();
 
     this->timer = new QTimer();
     connect(timer, SIGNAL(timeout()),this,SLOT(loop()));
@@ -156,7 +153,7 @@ void Population::save_child_population_to_file()
 
 void Population::load_from_file()
 {
-    QFile file(populationFileNameTest);
+    QFile file(populationFileName);
 
     if(!file.open(QFile::ReadOnly | QFile::Text))
     {
