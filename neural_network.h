@@ -6,7 +6,8 @@
 #include <QTimer>
 #include <QGraphicsView>
 
-#define NUMBER_OF_INPUTS 8
+#define INPUT_SIZE 7
+#define NUMBER_OF_INPUTS INPUT_SIZE*INPUT_SIZE
 #define NUMBER_OF_OUTPUTS 3 //left, right, up
 #define NUMBER_OF_NODES 3
 #define CHROMOSOME_LENGTH NUMBER_OF_NODES*(NUMBER_OF_INPUTS+NUMBER_OF_OUTPUTS)
@@ -35,6 +36,9 @@ public:
     void get_input_table();
     void get_nodes_values();
     void generate_output();
+    void print_input_table();
+    void print_output_table();
+    void print_nodes_table();
     void set_chromosome_gene(int num, int value);
     int get_chromosome_gene(int num);
     void start_game();

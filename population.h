@@ -4,7 +4,7 @@
 #include "individual.h"
 #include <QObject>
 
-#define POPULATION_SIZE 3
+#define POPULATION_SIZE 1
 #define MUTATION_CHANCE 15 //<100
 #define HYBRIDIZATION_CHANCE 95 //<100
 

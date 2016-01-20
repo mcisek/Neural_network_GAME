@@ -9,9 +9,15 @@ void NeuralNetwork::action()
 {
 
     get_input_table();
+
+    print_input_table();
+    print_nodes_table();
+    print_output_table();
+
     read_chromosome();
     get_nodes_values();
     generate_output();
+
 
     if(output_table[0]==1)
         game->player_right();
@@ -42,6 +48,10 @@ NeuralNetwork::NeuralNetwork(Game *game)
 {
     game_time = 0;
     this->game = game;
+
+    QTimer * timer = new QTimer();
+    connect(timer, SIGNAL(timeout()),this,SLOT(action()));
+    timer->start(50);
 }
 
 //NeuralNetwork::NeuralNetwork(Game *game)
@@ -135,57 +145,84 @@ void NeuralNetwork::get_input_table()
     int game_obstacles_table_width = game->get_obstacles_table_width();
     int game_obstacles_table_height = game->get_obstacles_table_height();
 
-    int table_obstacles[3][3];
+    int table_obstacles[INPUT_SIZE][INPUT_SIZE];
 
-    for(int ii=0; ii<3; ii++)
+    for(int ii=0; ii<INPUT_SIZE; ii++)
     {
-        for(int jj=0; jj<3; jj++)
+        for(int jj=0; jj<INPUT_SIZE; jj++)
         {
             table_obstacles[ii][jj]=0;
+            this->input_table[ii*INPUT_SIZE+jj] = 0;
         }
     }
 
-    for(int ii=0; ii<3; ii++)
+    int zero = (INPUT_SIZE-1)/2*40;
+
+    for(int ii=0; ii<INPUT_SIZE; ii++)
     {
-        for(int jj=0; jj<3; jj++)
+        for(int jj=0; jj<INPUT_SIZE; jj++)
         {
             for(int i=0; i<game_obstacles_table_width; i++)
             {
                 for(int j=0; j<game_obstacles_table_height; j++)
                 {
-                    if(player_x >= (game->obstacles[i][j]->pos().x() - 60 +(40*ii))
-                            && player_x <= (game->obstacles[i][j]->pos().x() - 20 + (40*ii)))
+                    if(player_x >= (game->obstacles[i][j]->pos().x() - 20 - zero +(40*ii))
+                            && player_x <= (game->obstacles[i][j]->pos().x() + 20 - zero + (40*ii)))
                     {
-                        if(player_y >= (game->obstacles[i][j]->pos().y()-60+(40*jj))
-                                && player_y <= (game->obstacles[i][j]->pos().y()-20+(40*jj)))
+                        if(player_y >= (game->obstacles[i][j]->pos().y()-20 - zero+(40*jj))
+                                && player_y <= (game->obstacles[i][j]->pos().y()+20-zero+(40*jj)))
                         {
                             table_obstacles[ii][jj]=1;
+                            this->input_table[ii*INPUT_SIZE+jj] = 1;
                         }
                     }
+                    //                    if((player_x - (INPUT_SIZE-1)/2*40 + 40*ii))
+                    //                    if(((player_x - zero + 40*ii -20) >= game->obstacles[i][j]->pos().x())
+                    //                            && ((player_x - zero + 40*ii + 20) <= game->obstacles[i][j]->pos().x()))
+                    //                    {
+                    //                        if(((player_y - zero + 40*jj -20) >= game->obstacles[i][j]->pos().y())
+                    //                                && ((player_y - zero + 40*jj +20) <= game->obstacles[i][j]->pos().y()))
+                    //                            this->input_table[ii*INPUT_SIZE+jj] = 1;
+                    //                    }
                 }
             }
         }
     }
+}
 
+void NeuralNetwork::print_input_table()
+{
+    qDebug() << "INPUT TABLE: ";
+    for(int i=0; i<NUMBER_OF_INPUTS; i++)
+        qDebug() << i << ". - " << input_table[i];
+}
 
-    //    qDebug() << "INPUT:";
+void NeuralNetwork::print_output_table()
+{
+    qDebug() << "OUTPUT TABLE: ";
+    for(int i=0; i<NUMBER_OF_OUTPUTS; i++)
+        qDebug() << i << ". - " << output_table[i];
+}
 
-    //    qDebug() << table_obstacles[2][2] << " " << table_obstacles[1][2] << " " << table_obstacles[0][2];
-    //    qDebug() << table_obstacles[2][1] << " " << "X" << " " << table_obstacles[0][1];
-    //    qDebug() << table_obstacles[2][0] << " " << table_obstacles[1][0] << " " << table_obstacles[0][0];
-
-    //qDebug() << "INPUT: " << input_table[0] << ", " << input_table[1] << ", " << input_table[2] << ", " << input_table[3] << ", " << input_table[4] << ", " << input_table[5] << ", " << input_table[6] << ", " << input_table[7];
+void NeuralNetwork::print_nodes_table()
+{
+    qDebug() << "NODES TABLE: ";
+    for(int i=0; i<NUMBER_OF_NODES; i++)
+        qDebug() << i << ". - " << nodes_values[i];
 }
 
 void NeuralNetwork::get_nodes_values()
 {
+    for(int j=0; j<NUMBER_OF_NODES; j++)
+    {
+        nodes_values[j] = 0;
+    }
+
     for(int i=0; i<NUMBER_OF_INPUTS; i++)
     {
         for(int j=0; j<NUMBER_OF_NODES; j++)
         {
-            if(i==0)
-                nodes_values[j]=0; //seting initial value
-            if (input_table_of_connections[i][j] == 1)
+            if (input_table_of_connections[i][j] == 1 && input_table[i] == 1)
                 nodes_values[j] = 1;
         }
     }
@@ -193,13 +230,16 @@ void NeuralNetwork::get_nodes_values()
 
 void NeuralNetwork::generate_output()
 {
+    for(int j=0; j<NUMBER_OF_OUTPUTS; j++)
+    {
+        output_table[j] = 0;
+    }
+
     for(int i=0; i<NUMBER_OF_NODES; i++)
     {
         for(int j=0; j<NUMBER_OF_OUTPUTS; j++)
         {
-            if (i==0)
-                output_table[j] = 0;
-            if(nodes_table_of_connections[i][j] == 1)
+            if(nodes_table_of_connections[i][j] == 1 && nodes_values[i] == 1)
                 output_table[j] = 1;
         }
     }
@@ -215,9 +255,9 @@ int NeuralNetwork::get_chromosome_gene(int num)
 
 void NeuralNetwork::start_game()
 {
-//    Game * g = new Game();
-//    this->game = g;
-//    this->game = new Game();
+    //    Game * g = new Game();
+    //    this->game = g;
+    //    this->game = new Game();
     this->game->back_to_begin();
     this->game->show();
 
@@ -229,7 +269,7 @@ void NeuralNetwork::start_game()
 void NeuralNetwork::close_game()
 {
     //this->game->close();
-//    this->game->repaint();
+    //    this->game->repaint();
     this->game->back_to_begin();
     nn_timer->stop();
 }
